@@ -29,7 +29,8 @@ def get_json(url: str) -> dict:
 
     Both get_lat_lng() and get_nearest_station() might need to use this function.
     """
-    pass
+    with urllib.request.urlopen(url) as response:
+        return json.loads(response.read().decode())
 
 
 def get_lat_lng(place_name: str) -> tuple[str, str]:
@@ -38,7 +39,21 @@ def get_lat_lng(place_name: str) -> tuple[str, str]:
 
     See https://docs.mapbox.com/api/search/search-box/#search-request for Mapbox Search API URL formatting requirements.
     """
-    pass
+    # Format the location name so it can go into a URL
+    query = urllib.parse.quote(place_name)
+    url = f"{MAPBOX_BASE_URL}?q={query}&access_token={MAPBOX_TOKEN}"
+
+    data = get_json(url)
+
+    # # If Mapbox can't find any information, display an error message
+    if "features" not in data or len(data["features"]) == 0:
+        raise RuntimeError("No results found for that location.")
+
+    # Set the coordinates to [longitude, latitude]
+    coords = data["features"][0]["geometry"]["coordinates"]
+    lng, lat = coords[0], coords[1]
+
+    return str(lat), str(lng)
 
 
 def get_nearest_station(latitude: str, longitude: str) -> tuple[str, bool]:
@@ -47,7 +62,28 @@ def get_nearest_station(latitude: str, longitude: str) -> tuple[str, bool]:
 
     See https://api-v3.mbta.com/docs/swagger/index.html#/Stop/ApiWeb_StopController_index for URL formatting requirements for the 'GET /stops' API.
     """
-    pass
+    url = (
+        f"{MBTA_BASE_URL}stops?"
+        f"filter[latitude]={latitude}&filter[longitude]={longitude}"
+        f"&api_key={MBTA_API_KEY}&sort=distance"
+    )
+
+    data = get_json(url)
+
+    # If the API did not return any stops, return an error message
+    if "data" not in data or len(data["data"]) == 0:
+        raise RuntimeError("No nearby MBTA stops found.")
+
+    # The first stop in the list is the closest one because we sorted by distance
+    nearest = data["data"][0]
+
+    # Extract the stop's name from the JSON structure
+    name = nearest["attributes"]["name"]
+
+    # For the MBTA API, 1 = wheelchair accessible
+    wheelchair = nearest["attributes"]["wheelchair_boarding"] == 1
+
+    return name, wheelchair
 
 
 def find_stop_near(place_name: str) -> tuple[str, bool]:
@@ -56,14 +92,22 @@ def find_stop_near(place_name: str) -> tuple[str, bool]:
 
     This function might use all the functions above.
     """
-    pass
+    # Get the location's coordinates using the Mapbox geocoding function.
+    lat, lng = get_lat_lng(place_name)
+
+    # Find the nearest station
+    return get_nearest_station(lat, lng)
 
 
 def main():
     """
     You should test all the above functions here
     """
-    pass
+    test_place = "Boston Common"
+    station, accessible = find_stop_near(test_place)
+
+    print("Nearest MBTA Station:", station)
+    print("Wheelchair Accessible:", accessible)
 
 
 if __name__ == "__main__":
