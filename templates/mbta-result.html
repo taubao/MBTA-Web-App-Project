@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Nearest MBTA Station</h1>
+
+    <p>You searched for: <strong>{{ place }}</strong></p>
+    <p>Nearest station: <strong>{{ station }}</strong></p>
+
+    {% if accessible %}
+    <p>This station <strong>is wheelchair accessible</strong>.</p>
+    {% else %}
+    <p>This station <strong>is NOT wheelchair accessible</strong>.</p>
+    {% endif %}
+
+    <p><a href="/mbta">Search again</a></p>
+    <p><a href="/">Back to home</a></p>
+  </body>
+</html>
+
