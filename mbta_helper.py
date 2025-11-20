@@ -1,6 +1,7 @@
 import os
 import json
 import urllib.request
+import urllib.parse
 
 from dotenv import load_dotenv
 
@@ -10,16 +11,20 @@ load_dotenv()
 # Get API keys from environment variables
 MAPBOX_TOKEN = os.getenv("MAPBOX_TOKEN")
 MBTA_API_KEY = os.getenv("MBTA_API_KEY")
+TICKETMASTER_API_KEY = os.getenv("TICKETMASTER_API_KEY")  # NEW
 
 # Optional: helpful error messages if keys are missing
 if MAPBOX_TOKEN is None:
     raise RuntimeError("MAPBOX_TOKEN is not set. Check your .env file.")
 if MBTA_API_KEY is None:
     raise RuntimeError("MBTA_API_KEY is not set. Check your .env file.")
+if TICKETMASTER_API_KEY is None:  # NEW
+    raise RuntimeError("TICKETMASTER_API_KEY is not set. Check your .env file.")
 
 # Useful base URLs (you need to add the appropriate parameters for each API request)
 MAPBOX_BASE_URL = "https://api.mapbox.com/search/searchbox/v1/forward"
 MBTA_BASE_URL = "https://api-v3.mbta.com/"
+TICKETMASTER_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events.json"  # NEW
 
 
 # A little bit of scaffolding if you want to use it
@@ -99,6 +104,55 @@ def find_stop_near(place_name: str) -> tuple[str, bool]:
     return get_nearest_station(lat, lng)
 
 
+# --------------------------------------------------------------
+# WOW FEATURE: Ticketmaster Nearby Events
+# --------------------------------------------------------------
+def get_nearby_events(latitude: str, longitude: str, radius: int = 5):
+    """
+    Given latitude and longitude strings, return a list of nearby Ticketmaster events.
+    Each event contains the event name, date, venue, and a link to the event page.
+    """
+
+    # Build the Ticketmaster API request URL
+    params = {
+        "apikey": TICKETMASTER_API_KEY,
+        "latlong": f"{latitude},{longitude}",
+        "radius": radius,
+        "size": 5
+    }
+
+    url = TICKETMASTER_BASE_URL + "?" + urllib.parse.urlencode(params)
+
+    try:
+        data = get_json(url)
+
+        # If Ticketmaster has no events nearby, return an empty list
+        if "_embedded" not in data:
+            return []
+
+        events_raw = data["_embedded"]["events"]
+        events_clean = []
+
+        # Extract only the information we care about from each event
+        for e in events_raw:
+            name = e.get("name", "Unknown event")
+            date = e["dates"]["start"].get("localDate", "Unknown date")
+            venue = e["_embedded"]["venues"][0].get("name", "Unknown venue")
+            link = e.get("url", "")
+
+            events_clean.append({
+                "name": name,
+                "date": date,
+                "venue": venue,
+                "url": link
+            })
+
+        return events_clean
+
+    except Exception:
+        return []
+
+
 def main():
     """
     You should test all the above functions here
@@ -108,6 +162,13 @@ def main():
 
     print("Nearest MBTA Station:", station)
     print("Wheelchair Accessible:", accessible)
+
+    lat, lng = get_lat_lng(test_place)
+    events = get_nearby_events(lat, lng)
+
+    print("\nNearby Events:")
+    for e in events:
+        print(f"- {e['name']} on {e['date']} at {e['venue']}")
 
 
 if __name__ == "__main__":

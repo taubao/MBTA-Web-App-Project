@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from mbta_helper import find_stop_near
+from mbta_helper import find_stop_near, get_lat_lng, get_nearby_events  # NEW IMPORT
 
 app = Flask(__name__)
 
@@ -27,15 +27,22 @@ def mbta_result():
         return render_template("error.html", message="No place provided")
 
     try:
+        # First, get the latitude and longitude
+        lat, lng = get_lat_lng(place)
+
         # Find the nearest MBTA station
         station, accessible = find_stop_near(place)
+
+        # Fetch nearby Ticketmaster events
+        events = get_nearby_events(lat, lng)
 
         # Render the result page and pass the variables to the template
         return render_template(
             "mbta-result.html",
             place=place,
             station=station,
-            accessible=accessible
+            accessible=accessible,
+            events=events
         )
 
     except Exception:
