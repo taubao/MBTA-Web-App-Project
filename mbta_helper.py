@@ -157,7 +157,7 @@ def main():
     """
     You should test all the above functions here
     """
-    test_place = "Boston Common"
+    test_place = "Wellesley"
     station, accessible = find_stop_near(test_place)
 
     print("Nearest MBTA Station:", station)
