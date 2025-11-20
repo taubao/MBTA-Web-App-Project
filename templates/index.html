@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hi</title>
-  </head>
+    <title>MBTA Finder</title>
 
-  <body>
-    <h1>Hi!</h1>
-    <p>This is an amazing app to help you find the nearest MBTA station</p>
+    <!-- Load CSS properly inside <head> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 
-    <a href="/mbta">
-      <button>Find Nearby MBTA Station</button>
-    </a>
+<body>
+    <div class="container">
+        <h1>Hi!</h1>
+        <p>This is an amazing app to help you find the nearest MBTA station.</p>
 
-  </body>
+        <a href="/mbta">
+            <button>Find Nearby MBTA Station</button>
+        </a>
+    </div>
+</body>
 </html>

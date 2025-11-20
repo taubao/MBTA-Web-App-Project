@@ -1,40 +1,56 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Nearest MBTA Station</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nearest MBTA Station</title>
 
-    <p>You searched for: <strong>{{ place }}</strong></p>
-    <p>Nearest station: <strong>{{ station }}</strong></p>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 
-    {% if accessible %}
-    <p>This station <strong>is wheelchair accessible</strong>.</p>
-    {% else %}
-    <p>This station <strong>is NOT wheelchair accessible</strong>.</p>
-    {% endif %}
+<body>
+    <div class="container">
 
-    <hr>
+        <h1>Nearest MBTA Station</h1>
 
-    <h2>Nearby Events (Ticketmaster)</h2>
+        <p>You searched for: <strong>{{ place }}</strong></p>
+        <p>Nearest station: <strong>{{ station }}</strong></p>
 
-    {% if events %}
-      <ul>
-        {% for e in events %}
-          <li>
-            <strong>{{ e.name }}</strong><br>
-            Date: {{ e.date }}<br>
-            Venue: {{ e.venue }}<br>
-            <a href="{{ e.url }}" target="_blank">Event Details</a>
-          </li>
-          <br>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No nearby events found.</p>
-    {% endif %}
+        {% if accessible %}
+            <p class="accessible">This station IS wheelchair accessible.</p>
+        {% else %}
+            <p class="not-accessible">This station is NOT wheelchair accessible.</p>
+        {% endif %}
 
-    <hr>
+        <hr>
 
-    <p><a href="/mbta">Search again</a></p>
-    <p><a href="/">Back to home</a></p>
-  </body>
+        <h2 class="ticketmaster-label">Nearby Events (Ticketmaster)</h2>
+
+        {% if events %}
+        <ul style="padding-left: 20px;">
+            {% for e in events %}
+            <li style="margin-bottom: 12px;">
+                <strong>{{ e.name }}</strong><br>
+                Date: {{ e.date }}<br>
+                Venue: {{ e.venue }}<br>
+                <a href="{{ e.url }}" target="_blank">View Event</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No nearby events found.</p>
+        {% endif %}
+
+        <hr>
+
+        <a href="/mbta">
+            <button>Search again</button>
+        </a>
+
+        <a href="/">
+            <button>Back to home</button>
+        </a>
+
+    </div>
+</body>
 </html>

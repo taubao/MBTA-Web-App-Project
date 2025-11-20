@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <h1>Error</h1>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Error</title>
+</head>
 
-    <p>{{ message }}</p>
+<body>
+  <div class="container">
+      <h1>Error</h1>
 
+      <p>{{ message }}</p>
 
-    <p><a href="/mbta">Try again</a></p>
-    <p><a href="/">Back to home</a></p>
-  </body>
+      <a href="/mbta"><button>Try again</button></a>
+      <a href="/"><button>Back to home</button></a>
+  </div>
+</body>
 </html>

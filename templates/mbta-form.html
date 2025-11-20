@@ -1,22 +1,33 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Find nearest MBTA station</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find MBTA Station</title>
 
-    <form action="" method="post">
-      <div>
-        <input
-          type="text"
-          name="place_name"
-          placeholder="Enter a place or address"
-        />
-      </div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 
-      <div>
-        <button>Search</button>
-      </div>
-    </form>
+<body>
+    <div class="container">
+        <h1>Find nearest MBTA station</h1>
 
-    <p><a href="/">Back to home</a></p>
-  </body>
+        <form action="" method="post">
+            <div>
+                <input
+                    type="text"
+                    name="place_name"
+                    placeholder="Enter a place or address"
+                    required
+                />
+            </div>
+
+            <div>
+                <button type="submit">Search</button>
+            </div>
+        </form>
+
+        <p><a href="/">Back to home</a></p>
+    </div>
+</body>
 </html>

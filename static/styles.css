@@ -1,0 +1,109 @@
+/* ------------------------------
+   GENERAL PAGE STYLE
+   ------------------------------ */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 0;
+    color: #333333;
+}
+
+/* Centered card container */
+.container {
+    max-width: 650px;
+    background: white;
+    margin: 40px auto;
+    padding: 32px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    border-top: 10px solid #003DA5;
+}
+
+/* ------------------------------
+   HEADINGS / TEXT
+   ------------------------------ */
+
+h1 {
+    text-align: center;
+    color: #003DA5;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+p {
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+strong {
+    color: #003DA5;
+}
+
+.ticketmaster-label {
+    color: #003DA5;
+    font-weight: 700;
+    font-size: 22px;
+    margin-top: 25px;
+}
+
+/* ------------------------------
+   FORMS (input + button)
+   ------------------------------ */
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: 2px solid #cccccc;
+    font-size: 16px;
+}
+
+button {
+    background-color: #FFCC00;
+    color: black;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+}
+
+button:hover {
+    background-color: #e6b800; 
+}
+
+/* ------------------------------
+   LINKS that look like buttons
+   ------------------------------ */
+
+a button {
+    width: 100%;
+}
+
+.accessible,
+.not-accessible {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 0;
+    margin: 10px 0;
+}
+
+
+.accessible {
+    color: #00A859;
+}
+
+
+.not-accessible {
+    color: #E53935;
+}
