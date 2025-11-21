@@ -49,6 +49,27 @@ strong {
 }
 
 /* ------------------------------
+   WEATHER BOX STYLE
+   ------------------------------ */
+
+.weather-box {
+    background: #f5f8ff;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #d6e2ff;
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    color: #003DA5;
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+/* ------------------------------
    FORMS (input + button)
    ------------------------------ */
 
@@ -83,7 +104,7 @@ button:hover {
 }
 
 /* ------------------------------
-   LINKS that look like buttons
+   LINK BUTTONS
    ------------------------------ */
 
 a button {
@@ -98,11 +119,9 @@ a button {
     margin: 10px 0;
 }
 
-
 .accessible {
     color: #00A859;
 }
-
 
 .not-accessible {
     color: #E53935;

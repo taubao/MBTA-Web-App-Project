@@ -1,25 +1,29 @@
 from flask import Flask, render_template, request
-from mbta_helper import find_stop_near, get_lat_lng, get_nearby_events  # NEW IMPORT
+from mbta_helper import (
+    find_stop_near,
+    get_lat_lng,
+    get_nearby_events,
+    get_current_weather,
+)
 
 app = Flask(__name__)
 
+
 @app.route("/")
-# Home page
 def homepage():
+    # Home page
     return render_template("index.html")
 
 
 @app.get("/mbta")
-# Show the input form (GET request)
 def mbta_form():
+    # Show the input form (GET request)
     return render_template("mbta-form.html")
 
 
 @app.post("/mbta")
-# Handle the submitted form (POST request)
 def mbta_result():
-
-    # Read the place name from the form
+    # Handle the submitted form (POST request)
     place = request.form.get("place_name")
 
     # If the place field is empty, show an error page
@@ -27,26 +31,29 @@ def mbta_result():
         return render_template("error.html", message="No place provided")
 
     try:
-        # First, get the latitude and longitude
+        # Get latitude & longitude
         lat, lng = get_lat_lng(place)
 
-        # Find the nearest MBTA station
+        # Find nearest MBTA station
         station, accessible = find_stop_near(place)
 
         # Fetch nearby Ticketmaster events
         events = get_nearby_events(lat, lng)
 
-        # Render the result page and pass the variables to the template
+        # NEW — Fetch weather data
+        weather = get_current_weather(lat, lng)
+
+        # Render results page
         return render_template(
             "mbta-result.html",
             place=place,
             station=station,
             accessible=accessible,
-            events=events
+            events=events,
+            weather=weather,  # NEW
         )
 
     except Exception:
-        # If anything goes wrong, show a generic error page
         return render_template("error.html", message="Unable to find MBTA stop")
 
 

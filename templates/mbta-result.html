@@ -22,8 +22,19 @@
             <p class="not-accessible">This station is NOT wheelchair accessible.</p>
         {% endif %}
 
+        <!-- WEATHER SECTION -->
+        {% if weather %}
+        <div class="weather-box">
+            <h2 class="section-title">Weather Near {{ place }}</h2>
+            <p><strong>Temperature:</strong> {{ weather.temp }}°F</p>
+            <p><strong>Feels Like:</strong> {{ weather.feels_like }}°F</p>
+            <p><strong>Condition:</strong> {{ weather.description }}</p>
+        </div>
+        {% endif %}
+
         <hr>
 
+        <!-- EVENTS SECTION -->
         <h2 class="ticketmaster-label">Nearby Events (Ticketmaster)</h2>
 
         {% if events %}
